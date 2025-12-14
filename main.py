@@ -20,3 +20,12 @@ async def submit_data(request: Request):
     async with aiofiles.open("data.txt", mode="a", encoding="utf-8") as f:
         await f.write(text + "\n")
     return {"status": "success", "message": "Данные приняты"}
+
+@app.get("/data")
+async def get_data():
+    try:
+        async with aiofiles.open("data.txt", mode="r", encoding="utf-8") as f:
+            content = await f.read()
+        return {"data": content}
+    except FileNotFoundError:
+        return {"data": ""}
